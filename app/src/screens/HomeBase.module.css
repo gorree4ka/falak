@@ -354,3 +354,12 @@
 .sheetHandle:focus-visible {
   outline: 2px solid var(--text-primary); outline-offset: calc(var(--space-1) * -1);
 }
+
+/*
+  Запущено с домашнего экрана — сверху стоит настоящая строка устройства.
+  Нарисованная уступает ей место: коробка остаётся на своих 44, прячется только
+  содержимое, поэтому кадр не съезжает и геометрия экрана не меняется.
+*/
+@media (display-mode: standalone) {
+  .statusbar > * { visibility: hidden; }
+}

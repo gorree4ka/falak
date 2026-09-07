@@ -1,0 +1,63 @@
+/* Оболочка одного кадра. Служебная — по-русски и слева направо; продукт внутри кадра — RTL. */
+.page {
+  direction: ltr;
+  min-block-size: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-6) var(--space-12);
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+}
+
+/* Полоса — три группы: назад · экран и состояния · Figma и тема. На узком окне
+   средняя группа уходит на свою строку, ничего не ломается и не режется. */
+.bar {
+  inline-size: 100%; max-inline-size: 1200px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  min-block-size: var(--touch-min);
+}
+.center { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); order: 0; }
+.states { flex-wrap: wrap; }
+.right { display: flex; align-items: center; gap: var(--space-4); justify-content: flex-end; }
+.bar > * { white-space: nowrap; }
+@media (max-width: 900px) {
+  .center { order: 1; flex-basis: 100%; justify-content: center; }
+}
+
+.quiet { color: var(--text-muted); text-decoration: none; letter-spacing: 0; }
+.quiet:hover { color: var(--text-primary); }
+.right .quiet { letter-spacing: .1em; }
+
+/* Состояния кадра — той же формой, что переключатель периода в шторке. */
+.states { display: flex; gap: var(--space-1); }
+.pill, .pillOn {
+  display: inline-flex; align-items: center; white-space: nowrap;
+  min-block-size: var(--space-8); padding-inline: var(--space-3);
+  border-radius: var(--radius-full); text-decoration: none;
+  transition: color var(--motion-press), background-color var(--motion-press);
+}
+.pill { color: var(--text-muted); }
+.pill:hover { color: var(--text-primary); background: var(--surface-raised); }
+.pillOn { color: var(--text-primary); background: var(--surface-pressed); box-shadow: inset 0 0 0 1px var(--border-strong); }
+.pill:focus-visible, .pillOn:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+
+/* Корпус устройства: 393×852, срез по радиусу, волосяная кромка. */
+/* Вход экрана: кадр поднимается на 12 px и проявляется — длительность из --motion-move.
+   Экран, который сам ведёт свой вход (модальная шторка), отказывается атрибутом. */
+.frame > * { animation: screen-enter var(--motion-move) both; }
+.frame > [data-enter='none'] { animation: none; }
+@keyframes screen-enter { from { opacity: 0; transform: translateY(12px); } }
+
+.frame {
+  inline-size: 393px; block-size: 852px; overflow: hidden; flex: none;
+  border-radius: 44px;
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+}
+
+/* На телефоне ссылка открывается как приложение: без полосы, кадр во весь экран. */
+@media (max-width: 480px) {
+  .page { padding: 0; gap: 0; justify-content: center; min-block-size: 100dvh; }
+  .bar { display: none; }
+  .frame { border-radius: 0; box-shadow: none; }
+}

@@ -1,0 +1,16 @@
+/* Сброс — условие работы кита, а не оформление.
+   Любая новая точка входа, показывающая компоненты, берёт этот файл. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+button { padding: 0; border: none; background: none; font: inherit; color: inherit; }
+
+/* Пользователь попросил систему поменьше двигать: переходы и кейфреймы схлопываются
+   в мгновенные, GSAP проверяет тот же запрос сам (motion.ts). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

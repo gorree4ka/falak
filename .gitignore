@@ -1,0 +1,20 @@
+.tmp/
+node_modules/
+dist/
+storybook-static/
+*.log
+__pycache__/
+
+# чужие репозитории навыков, лежащие в ассетах
+assets/animations-skills/
+# оригиналы фото: в сборку уезжают WebP из app/public/photos
+assets/photos/
+.playwright-mcp/
+tsconfig.tsbuildinfo
+
+# рабочая обвязка агента: живёт на диске, в репозиторий не едет
+.claude/
+.mcp.json
+CLAUDE.md
+START.md
+execution/history_digest.py

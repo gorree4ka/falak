@@ -1,0 +1,356 @@
+/* Кадр устройства. Кромки принадлежат устройству и задаются переменными. */
+.screen {
+  position: relative;
+  inline-size: 393px;
+  block-size: 852px;
+  overflow: hidden;
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+}
+
+/* три источника света и ни одной тени */
+.hazeTop, .hazeBottom {
+  position: absolute; inset-inline-start: -64px;
+  inline-size: 520px; border-radius: 50%;
+  /* Радиус 120 из макета — это blur(60px) в CSS: у Figma радиус, у CSS сигма,
+     и radius = 2σ (то же правило, что у шторок, №133). При blur(120px) пятно
+     размазывалось вдвое шире и светило вдвое слабее (№134). */
+  filter: blur(60px); pointer-events: none;
+}
+.hazeTop    { inset-block-start: 10px;  block-size: 300px; background: var(--money-free-graphic);     opacity: .13; }
+.hazeBottom { inset-block-start: 640px; block-size: 260px; background: var(--money-reserved-graphic); opacity: .14; }
+
+.statusbar {
+  /* Порядок наложения кадра, снизу вверх: дымка → прибор → шторка → хром.
+     Задаётся целиком, а не точечно: точечный z-index чинит один стык и ломает соседний. */
+  position: relative;
+  z-index: 3;
+  block-size: var(--statusbar-h);
+  padding-block-start: 14px;
+  padding-inline: 26px;
+  display: flex; align-items: flex-start; gap: var(--space-2);
+  flex: none;
+}
+.indicators { display: flex; align-items: center; gap: 7px; color: var(--text-primary); }
+.cellular { display: flex; align-items: flex-end; gap: 2px; }
+.cellular i { inline-size: 3px; border-radius: 1px; background: currentColor; display: block; }
+
+.header {
+  position: relative;
+  z-index: 3;
+  block-size: 40px; flex: none;
+  padding-inline: var(--space-gutter);
+  display: flex; align-items: center; gap: var(--space-3);
+}
+.avatar {
+  inline-size: 34px; block-size: 34px; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  color: var(--text-muted);
+  font-size: var(--size-base);
+}
+.bell { color: var(--text-muted); }
+
+/* прибор шире экрана и срезается кадром */
+.orbitZone { position: relative; z-index: 1; block-size: 319px; flex: none; }
+.orbitZone > svg { position: absolute; inset-inline-start: -25px; inset-block-start: -61px; }
+
+.muted { color: var(--text-muted); }
+.faint { color: var(--text-faint); }
+.marking { color: var(--text-reserved); }
+.grow { flex: 1; }
+
+/*
+  Загрузка: прибор на месте, показаний нет. Заглушка держит место числа и
+  дышит — это не «пусто», а «ещё считается» (§12).
+*/
+.skeletonHero, .skeletonValue {
+  display: block; border-radius: var(--radius-md);
+  background: var(--surface-pressed);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.skeletonHero  { inline-size: 148px; block-size: 62px; }
+.skeletonValue { inline-size: 72px;  block-size: 26px; }
+@keyframes pulse { 50% { opacity: .45; } }
+
+/* шторка месяца */
+.sheet {
+  /*
+    Шторка живёт в двух ростах и меняет только свой, а не положение прибора:
+    кольцо закреплено в кадре, двигается слой поверх него.
+    Прозрачность лёгкая — сквозь шторку виден край прибора, и она читается
+    слоем над ним, а не второй половиной экрана.
+  */
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  max-block-size: 560px;
+  transition: max-block-size var(--motion-move), block-size var(--motion-move);
+  background-image:
+    var(--texture-hatch),
+    linear-gradient(to bottom, var(--sheet-sheen) 0%, var(--sheet-veil) 55%, var(--sheet-veil) 100%);
+  /* Радиус 20 из макета — это blur(10px) в CSS: у Figma радиус, у CSS сигма
+     гауссианы, и radius = 2σ. При blur(20px) прибор за стеклом смазывался
+     в ровный тон, и шторка читалась непрозрачной (№133). */
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-start-start-radius: 24px; border-start-end-radius: 24px;
+  border-block-start: 1px solid var(--border-strong);
+  overflow: visible;
+}
+
+/* Низ обода: статус-бар + шапка + смещение SVG + центр + радиус.
+   В сжатом виде панель всегда ниже него, с зазором space-3. */
+.screen[data-sheet='peek'] .sheet {
+  max-block-size: calc(100% - (var(--statusbar-h) + 40px - 61px + 222px + 212px + var(--space-3)));
+  padding-block-end: 85px;
+}
+/*
+  Свёрнутый рост — тоже число, и это условие движения, а не прихоть.
+  Между `auto` и длиной браузер не интерполирует: раскрытие тянуло один
+  `max-height` и в первом кадре прыгало на 27 px, а сворачивание не
+  анимировалось вовсе — панель захлопывалась мгновенно (№160).
+
+  Числа — замер натурального роста, а не выбор: месяц и сегодня 355,9,
+  выбранный день 328,3. С плашкой данных содержимое упирается в предел
+  видимости обода, и рост равен самому пределу — 383.
+*/
+.screen[data-sheet='peek'] .sheet { block-size: 356px; }
+.screen[data-sheet='peek'][data-view='day'] .sheet { block-size: 328px; }
+.screen[data-sheet='peek'][data-notice] .sheet { block-size: 383px; }
+/*
+  Раскрытая шторка держит свой рост, а не рост содержимого: у месяца и у дня
+  разное наполнение, и на переключении панель прыгала по высоте (№139).
+  Рост один — 560, дальше содержимое прокручивается внутри.
+*/
+.screen[data-sheet='expanded'] .sheet { block-size: 560px; }
+/*
+  Выбранный день короче месяца: под ним состав одного дня, а не месячная лента,
+  и на 560 оставалась пустая треть панели.
+
+  Рост при этом остаётся **фиксированным и одним на все тридцать дней**. «По
+  содержимому» пробовали, и панель дёргалась на каждом тапе по кольцу: у дней
+  разная высота, а auto → auto браузер не анимирует (№158, №159). Здесь меняется
+  не способ, а значение: 560 → 432 — переход между двумя числами, и его движение
+  ведёт тот же токен, что раскрытие.
+
+  Замер по всем дням фикстуры: любой день просит 424–425 (шапка 183 + состав),
+  сегодня — 527. Поэтому у сегодня рост прежний: у него есть операции с рассвета
+  и расчёт дня, и короткая панель отправила бы их под прокрутку.
+*/
+.screen[data-sheet='expanded'][data-view='day'] .sheet { block-size: 432px; }
+/* Плашка данных занимает 85 — с ней короткий рост уводит расчёт дня под прокрутку. */
+.screen[data-sheet='expanded'][data-view='day'][data-notice] .sheet { block-size: 560px; }
+
+.screen[data-sheet='peek'] .details { display: none; }
+/* Раскрытие: рост тянет CSS-переход, содержимое подхватывает движение и проявляется. */
+.screen[data-sheet='expanded'] .details { animation: details-in var(--motion-move) both; }
+@keyframes details-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* плашка состояния данных: над сводкой, видна в обоих ростах */
+.dataNotice { padding: var(--space-2) var(--space-gutter) 0; flex: none; }
+
+.peekContext {
+  display: flex; flex-direction: column;
+  padding: var(--space-2) var(--space-gutter) var(--space-4);
+  min-block-size: 0; overflow-y: auto; overscroll-behavior: contain;
+}
+.nextPayment, .nextEmpty {
+  min-block-size: var(--space-16);
+  padding: var(--space-2);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+}
+.nextPayment {
+  display: flex; align-items: center; gap: var(--space-3);
+  inline-size: 100%; text-align: start; cursor: pointer;
+  transition: background-color var(--motion-press), border-color var(--motion-press);
+}
+/* На касании :hover залипает до следующего тапа — состояние наведения только там, где есть курсор. */
+@media (hover: hover) {
+  .nextPayment:hover { background: var(--surface-pressed); border-color: var(--border-strong); }
+}
+.nextPayment:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.nextText { display: flex; flex: 1; flex-direction: column; gap: var(--space-1); }
+.nextEmpty { display: flex; flex-direction: column; gap: var(--space-1); justify-content: center; }
+
+/* раскрытый: содержимое прокручивается внутри, а не удлиняет шторку */
+.details {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block-end: 90px;
+}
+.details, .day, .peekContext { scrollbar-width: none; }
+.details::-webkit-scrollbar, .day::-webkit-scrollbar, .peekContext::-webkit-scrollbar { display: none; }
+
+.sheetHeader {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding-inline: var(--space-gutter);
+  flex: none;
+}
+.sheetTitle { display: flex; flex: 1; min-inline-size: 0; align-items: center; gap: var(--space-3); }
+.sheetTitle > * { white-space: nowrap; }
+.sectionHeading {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+  padding-inline: var(--space-gutter);
+  min-block-size: var(--touch-min); flex: none;
+  color: var(--text-muted);
+}
+.sectionHeading .link { min-block-size: var(--touch-min); white-space: nowrap; }
+.sectionHeading .link:focus-visible {
+  outline: 2px solid var(--text-primary); outline-offset: var(--space-1);
+}
+
+/* сводка: три числа, каждое со своей меткой состояния */
+.summary {
+  display: flex; gap: var(--space-4);
+  padding: var(--space-3) var(--space-gutter) var(--space-2);
+  flex: none;
+}
+.sum { flex: 1; display: flex; flex-direction: column; gap: var(--space-1); align-items: flex-start; }
+.sum:nth-child(2) { align-items: center; }
+.sum:last-child { align-items: flex-end; }
+.sumLabel { display: flex; align-items: center; gap: 6px; color: var(--text-faint); }
+.dot { inline-size: 6px; block-size: 6px; border-radius: var(--radius-full); flex: none; }
+.dot.reserved { background: var(--money-reserved); }
+.dot.free { background: var(--money-free); }
+.dot.muted { background: var(--money-past); }
+.rule { flex: 1; block-size: 1px; background: var(--border-hairline); }
+/* Переключатель — углубление в плоскости шторки, а не ещё одна плашка на ней.
+   Подложка берёт цвет фона экрана: только так активный сегмент читается
+   приподнятым, а не одним оттенком из трёх соседних. */
+.switch {
+  position: relative;
+  display: flex; flex: none; gap: 0;
+}
+/* Горизонтальный жест принадлежит переключателю, вертикальная прокрутка — экрану. */
+.switchTrack { touch-action: pan-y; user-select: none; }
+.switch::before {
+  content: ''; position: absolute; pointer-events: none;
+  inset-inline: 0; inset-block: calc(var(--space-3) / 2);
+  border-radius: var(--radius-full);
+  background: var(--surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+}
+/* Сегмент не уже 56, но растёт под дату («18 سبتمبر»): ширина плашки — от содержимого. */
+.seg, .segOn {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-inline-size: calc(var(--space-12) + var(--space-2)); min-block-size: var(--touch-min);
+  padding-inline: calc(var(--space-1) / 2);
+  border-radius: var(--radius-full); cursor: pointer;
+  transition: color var(--motion-press);
+}
+.seg > span, .segOn > span {
+  display: flex; align-items: center; justify-content: center;
+  inline-size: 100%; padding-inline: var(--space-2); white-space: nowrap;
+  block-size: calc(var(--space-8) - var(--space-1));
+  border-radius: var(--radius-full);
+  transition: background-color var(--motion-press);
+}
+.seg:focus-visible, .segOn:focus-visible {
+  outline: 2px solid var(--text-primary); outline-offset: var(--space-1);
+}
+.seg   { color: var(--text-muted); }
+.segOn { color: var(--text-primary); }
+/*
+  Плашку активного сегмента рисует не подпись, а отдельный слой `.thumb`:
+  подпись перекрашиванием прыгала бы из сегмента в сегмент, а слой едет —
+  и видно, куда. Едет `transform`, то есть без пересчёта раскладки, поэтому
+  движение остаётся гладким и под пальцем (№161).
+*/
+.thumb {
+  position: absolute; inset-inline-start: 0; inset-block-start: 50%;
+  block-size: calc(var(--space-8) - var(--space-1));
+  margin-block-start: calc((var(--space-8) - var(--space-1)) / -2);
+  border-radius: var(--radius-full);
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+  transition: transform var(--motion-move), inline-size var(--motion-move);
+  pointer-events: none;
+}
+/* Под пальцем плашка не догоняет, а идёт вместе с ним: перехода на время жеста нет. */
+.thumbDrag { transition: none; }
+
+/*
+  Плашку рисует подпись — до тех пор, пока слой не замерен. Пустого состояния
+  быть не должно: первая редакция прятала слой до замера, и на кадре между
+  сборкой и замером сегмент оставался без плашки вовсе (замечено пользователем).
+  Замер сделан — подпись плашку отдаёт.
+*/
+.segOn > span {
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+.switch[data-thumb='on'] .segOn > span { background: none; box-shadow: none; }
+
+.reserve { padding: var(--space-5) var(--space-gutter) 0; display: flex; flex-direction: column; gap: 10px; }
+.row { display: flex; align-items: center; gap: var(--space-2); }
+.row:first-child { padding-block-start: var(--space-2); border-block-start: 1px solid var(--border-hairline); }
+.link { display: flex; align-items: center; gap: 6px; color: var(--text-free); cursor: pointer; }
+
+.context { padding: var(--space-5) var(--space-gutter) 0; }
+.people  { padding: var(--space-5) var(--space-gutter) 0; display: flex; justify-content: space-between; }
+.feed    { padding: var(--space-3) var(--space-gutter) 0; }
+
+/* таб-бар прибит к низу: лента уходит под него, и срез приходится между строками */
+.tabbar { position: absolute; z-index: 3; inset-inline: 0; inset-block-end: 0; }
+
+/* Состав выбранного дня. Кольцо не считает — счёт живёт здесь. */
+.day {
+  padding: var(--space-2) var(--space-gutter) var(--space-4);
+  display: flex; flex: 1; flex-direction: column; gap: var(--space-2);
+  min-block-size: 0; overflow-y: auto; overscroll-behavior: contain;
+}
+.screen[data-sheet='expanded'] .day {
+  flex: 1; min-block-size: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding-block-end: calc(85px + var(--space-6));
+}
+.dayTransactions { border-block-start: 1px solid var(--border-hairline); }
+/* Расчёт дня: тот же приём, что в «Как посчитано» — линия стоит там, где получилось число. */
+.dayMath { flex: none; margin-block-start: var(--space-2); border-block-start: 1px solid var(--border-hairline); }
+.dayTotal { border-block-start: 1px solid var(--border-hairline); margin-block-start: var(--space-1); }
+.dayRow { display: flex; flex: none; align-items: center; gap: var(--space-3); padding-block: var(--space-2); }
+.dayRowLink { cursor: pointer; border-radius: var(--radius-md); transition: background-color var(--motion-press); position: relative; }
+/* Строка 36 при шаге 44: зона нажатия добирает ровно зазор между строками и в соседнюю не заходит. */
+.dayRowLink::after {
+  content: ''; position: absolute;
+  inset-inline: 0; inset-block: calc(var(--space-2) / -2);
+}
+.dayRowLink:active { background: var(--surface-pressed); }
+.dayRowLink:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.markHard, .markSoft { inline-size: 8px; block-size: 8px; border-radius: var(--radius-full); flex: none; }
+.markHard { background: var(--money-reserved); }
+.markSoft { box-shadow: inset 0 0 0 1.6px var(--money-reserved); }
+
+
+/* Ручка имеет собственную область над заголовком, отдельно от периода и ссылок. */
+.sheetHandle {
+  display: flex; flex: none; align-self: center; align-items: flex-start; justify-content: center;
+  position: relative;
+  inline-size: calc(var(--space-12) * 2); block-size: var(--space-6);
+  padding-block-start: var(--space-3);
+  border-radius: var(--radius-full);
+  touch-action: none; user-select: none;
+  cursor: grab;
+}
+/* Полоска рисуется на 24, а нажимается на 44: зона нажатия не обязана двигать содержимое вниз — она расширяется наружу. */
+.sheetHandle::after {
+  content: ''; position: absolute;
+  inset-inline: 0; inset-block: calc((var(--touch-min) - var(--space-6)) / -2);
+}
+.sheetHandle > span {
+  inline-size: var(--space-12); block-size: var(--space-1);
+  border-radius: var(--radius-full); background: var(--text-faint);
+}
+@media (hover: hover) { .sheetHandle:hover > span { background: var(--text-muted); } }
+.sheetHandle:active { cursor: grabbing; }
+.sheetHandle:focus-visible {
+  outline: 2px solid var(--text-primary); outline-offset: calc(var(--space-1) * -1);
+}

@@ -1,0 +1,99 @@
+.screen {
+  position: relative;
+  inline-size: 393px; block-size: 852px; overflow: hidden;
+  background: var(--surface-canvas); color: var(--text-primary);
+  direction: rtl;
+  display: flex; flex-direction: column;
+}
+.grow { flex: 1; }
+.muted { color: var(--text-muted); }
+.faint { color: var(--text-faint); }
+.marking { color: var(--text-reserved); }
+
+/* дымка: у горизонта глиняная — свет кадра тоже говорит о состоянии */
+.hazeTop, .hazeBottom {
+  position: absolute; inset-inline-start: -64px;
+  inline-size: 520px; border-radius: 50%;
+  /* Радиус 120 из макета — это blur(60px) в CSS: у Figma радиус, у CSS сигма,
+     и radius = 2σ (то же правило, что у шторок, №133). При blur(120px) пятно
+     размазывалось вдвое шире и светило вдвое слабее (№134). */
+  filter: blur(60px); pointer-events: none;
+}
+.hazeTop    { inset-block-start: 10px;  block-size: 300px; background: var(--money-short-graphic); opacity: .10; }
+.hazeBottom { inset-block-start: 640px; block-size: 260px; background: var(--money-reserved-graphic); opacity: .12; }
+
+.header {
+  position: relative; z-index: 3;
+  block-size: 40px; flex: none;
+  padding-inline: var(--space-gutter);
+  display: flex; align-items: center; gap: var(--space-3);
+}
+.avatar {
+  inline-size: 34px; block-size: 34px; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  color: var(--text-muted); font-size: var(--size-base);
+}
+
+.orbitZone { position: relative; z-index: 1; block-size: 319px; flex: none; }
+.orbitZone > svg { position: absolute; inset-inline-start: -25px; inset-block-start: -61px; }
+
+/* шторка: один рост — список решений не прокручивается (№77) */
+.sheet {
+  position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 2;
+  display: flex; flex-direction: column;
+  /* Список решений не лента: обе строки обязаны помещаться над таб-баром (№77).
+     Таб-бар 88, плюс зазор — иначе нижний путь срезается, а выход, которого не видно, выходом не является. */
+  padding-block-end: calc(88px + var(--space-2));
+  background-image:
+    var(--texture-hatch),
+    linear-gradient(to bottom, var(--sheet-sheen) 0%, var(--sheet-veil) 55%, var(--sheet-veil) 100%);
+  /* Радиус 20 из макета — это blur(10px) в CSS: у Figma радиус, у CSS сигма
+     гауссианы, и radius = 2σ. При blur(20px) прибор за стеклом смазывался
+     в ровный тон, и шторка читалась непрозрачной (№133). */
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-start-start-radius: 24px; border-start-end-radius: 24px;
+  border-block-start: 1px solid var(--border-strong);
+}
+
+.sheetHeader {
+  display: flex; align-items: center; gap: var(--space-3); flex: none;
+  padding: var(--space-4) var(--space-gutter) 0;
+}
+.link {
+  padding: 0; border: none; background: none; font: inherit;
+  display: flex; align-items: center; gap: 6px; color: var(--text-free);
+  min-block-size: var(--touch-min); cursor: pointer;
+}
+
+.summary {
+  display: flex; align-items: baseline; gap: var(--space-2); flex: none;
+  padding: var(--space-1) var(--space-gutter) 0;
+}
+
+.context { padding: var(--space-4) var(--space-gutter) 0; flex: none; }
+
+.ways { padding: var(--space-4) var(--space-gutter) 0; display: flex; flex-direction: column; gap: var(--space-2); flex: none; }
+.waysHead { display: flex; align-items: center; gap: var(--space-3); min-block-size: var(--space-6); }
+.rule { flex: 1; block-size: 1px; background: var(--border-hairline); }
+
+/* путь — выбор, а не сообщение: нажатие переносит обязательство и пересчитывает число */
+.way {
+  padding: var(--space-3); border: none; font: inherit;
+  display: flex; align-items: center; gap: var(--space-3);
+  min-block-size: var(--touch-min);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  color: var(--text-primary); text-align: start; cursor: pointer;
+  transition: background-color var(--motion-press), box-shadow var(--motion-press);
+}
+.way[aria-pressed='true'] {
+  background: var(--surface-free);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--money-free-graphic) 16%, transparent);
+}
+.way:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.wayText { display: flex; flex-direction: column; gap: 2px; }
+
+.tabbar { position: absolute; z-index: 3; inset-inline: 0; inset-block-end: 0; }

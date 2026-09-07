@@ -1,0 +1,85 @@
+.screen {
+  position: relative;
+  inline-size: 393px;
+  block-size: 852px;
+  overflow: hidden;
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  direction: rtl;
+}
+
+/* шапка пустая: на первом открытии ни уведомлений, ни профиля ещё нет */
+.chrome { block-size: 40px; }
+
+/* Прибор на месте и не приглушён: легенда объясняет то, на что человек смотрит. */
+.backdrop { position: absolute; inset-block-start: 84px; inset-inline-start: 0; }
+.backdrop > svg { position: absolute; inset-inline-start: -25px; inset-block-start: -61px; }
+
+.sheet {
+  position: absolute; inset-inline: 0; inset-block-end: 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding-block: 0 var(--space-safe-bottom);
+  background-image:
+    var(--texture-hatch),
+    linear-gradient(to bottom, var(--sheet-sheen) 0%, var(--sheet-veil) 55%, var(--sheet-veil) 100%);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-start-start-radius: 24px; border-start-end-radius: 24px;
+  border-block-start: 1px solid var(--border-strong);
+  animation: sheet-rise 320ms cubic-bezier(.32,.72,0,1) both;
+}
+@keyframes sheet-rise { from { transform: translateY(48px); opacity: 0; } }
+
+.handle {
+  display: flex; flex: none; justify-content: center; align-items: flex-start; align-self: center;
+  position: relative;
+  inline-size: calc(var(--space-12) * 2); block-size: var(--space-6);
+  padding-block-start: var(--space-3);
+}
+.handle::before {
+  content: '';
+  inline-size: var(--space-12); block-size: var(--space-1);
+  border-radius: var(--radius-full); background: var(--text-faint);
+}
+
+.header {
+  inline-size: 100%;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-gutter) var(--space-1);
+}
+.header > * { white-space: nowrap; flex: none; }
+.rule { flex: 1 1 0; min-inline-size: var(--space-4); block-size: 1px; background: var(--border-hairline); }
+.marking { color: var(--text-faint); }
+
+.lead {
+  inline-size: 100%;
+  padding: 0 var(--space-gutter) var(--space-3);
+  color: var(--text-muted);
+}
+
+.list { inline-size: 100%; padding-inline: var(--space-gutter); }
+.item {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-block-start: 1px solid var(--border-hairline);
+}
+.item:first-child { border-block-start: none; }
+.text { display: flex; flex-direction: column; gap: 2px; }
+.muted { color: var(--text-muted); }
+
+/*
+  Образец знака рисуется тем же, чем рисуется кольцо: та же форма метки,
+  та же засечка, та же дуга. Картинка-объяснение, нарисованная иначе,
+  объясняла бы другой прибор.
+*/
+.sample {
+  inline-size: 44px; block-size: 44px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.markHard, .markSoft { inline-size: 8px; block-size: 8px; border-radius: var(--radius-full); }
+.markHard { background: var(--money-reserved); }
+.markSoft { box-shadow: inset 0 0 0 1.6px var(--money-reserved); }
+.ticks { display: flex; align-items: flex-end; gap: 3px; block-size: 22px; }
+.ticks i { inline-size: 1px; background: var(--orbit-engraving); display: block; }
+.arcSample { display: block; }
+
+.actions { inline-size: 100%; padding: var(--space-4) var(--space-gutter) 0; }

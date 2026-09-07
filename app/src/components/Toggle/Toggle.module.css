@@ -1,0 +1,38 @@
+.track {
+  padding: 0; border: none; background: none; font: inherit; color: inherit;
+  position: relative;
+  inline-size: 44px;
+  block-size: 26px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color var(--motion-press);
+}
+/*
+  Дорожка 26 в высоту — это вид, а не цель. Цель добирается прозрачной
+  областью до 44 по контракту; растить саму дорожку нельзя, она встала бы
+  выше строки резерва (№130).
+*/
+.track::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block: calc((var(--touch-min) - 26px) / -2);
+}
+/* Нажатие подтверждается ходом бегунка: он приседает, дорожка темнеет. */
+.track:active .knob { transform: scale(.92); }
+.track:active.off { background: var(--surface-raised); }
+.track:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.off { background: var(--surface-pressed); box-shadow: inset 0 0 0 1px var(--border-hairline); }
+.on  { background: var(--money-reserved-graphic); }
+
+.knob {
+  position: absolute;
+  inset-block-start: 3px;
+  inline-size: 20px;
+  block-size: 20px;
+  border-radius: var(--radius-full);
+  transition: inset-inline-start var(--motion-move), background-color var(--motion-press),
+    transform var(--motion-press);
+}
+.off .knob { inset-inline-start: 3px;  background: var(--orbit-numeral); }
+.on  .knob { inset-inline-start: 21px; background: var(--surface-canvas); }

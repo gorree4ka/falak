@@ -1,0 +1,12 @@
+/* подпись · число · линия — с зазором space-2 между ними, как в мастере 8:22 (76 в высоту) */
+.field { display: flex; flex-direction: column; gap: var(--space-2); inline-size: 100%; }
+.caption { color: var(--text-muted); }
+.valueRow {
+  display: flex; align-items: baseline; gap: var(--space-2);
+  padding-block-end: 10px;
+}
+.value { color: var(--text-primary); }
+.currency { color: var(--text-muted); }
+.underline { display: block; block-size: 1px; inline-size: 100%; background: var(--border-hairline); }
+.field[data-state='error'] .underline { background: var(--border-short); }
+.hint { color: var(--text-short); padding-block-start: var(--space-2); }

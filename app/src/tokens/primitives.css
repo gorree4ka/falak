@@ -1,0 +1,127 @@
+/* Primitive — выгружено из Figma, коллекция Primitive.
+   Правится в Figma, потом здесь. Обратное направление запрещено контрактом. */
+:root {
+  /* известняк — дневная шкала нейтралов */
+  --sand-00: #f6f1e7;
+  --sand-50: #efe9dc;
+  --sand-100: #e5ddcc;
+  --sand-200: #d3caba;
+  --sand-300: #b9ae9b;
+  --sand-500: #6e695e;
+  --sand-700: #6c6255;
+  --sand-900: #2a322d;
+  --sand-950: #131e1a;
+
+  /* чернила — ночная шкала, ведущая */
+  --ink-950: #040a08;
+  --ink-900: #070f0d;
+  /* Плита вкладок: ночью углубляться ниже холста некуда — `ink-950` читается
+     дырой, а не плоскостью. Ступень между холстом и поднятой поверхностью. */
+  --ink-850: #101815;
+  --ink-800: #19241f;
+  --ink-700: #22302a;
+  --ink-600: #25332c;
+  --ink-400: #3e4a44;
+  --ink-300: #8a8375;
+  --ink-200: #a9a192;
+  --ink-00: #f4eee2;
+
+  /* три состояния денег */
+  --jade-50: #e9f0eb;
+  --jade-100: #dce6df;
+  --jade-200: #9beecb;
+  --jade-300: #6fe0ae;
+  --jade-400: #3fc28e;
+  --jade-500: #22805e;
+  --jade-700: #17604a;
+  --jade-800: #104534;
+  --jade-850: #0e372a;
+  --jade-900: #10261d;
+  --brass-50: #f5eddd;
+  --brass-100: #efe3cb;
+  --brass-200: #f0d6a2;
+  --brass-300: #e8c27a;
+  --brass-400: #c69744;
+  --brass-500: #96702a;
+  --brass-700: #836525;
+  --brass-850: #2e240f;
+  --brass-900: #241c0d;
+  --clay-50: #f8e9e2;
+  --clay-100: #f2dcd2;
+  --clay-300: #e8916a;
+  --clay-400: #c25a33;
+  --clay-500: #be5834;
+  --clay-700: #97432a;
+  --clay-850: #35241e;
+  --clay-900: #241815;
+
+  /* кегли */
+  --size-xs: 11px;
+  --size-sm: 13px;
+  --size-base: 15px;
+  --size-lg: 17px;
+  --size-xl: 20px;
+  --size-2xl: 24px;
+  --size-3xl: 34px;
+  --size-4xl: 48px;
+  --size-5xl: 58px;
+  --size-6xl: 72px;
+
+  /* насыщенность */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* радиусы */
+  --radius-none: 0px;
+  --radius-sm: 3px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* отступы */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-gutter: 22px;
+  --space-safe-bottom: 34px;
+  /* кромки принадлежат устройству: на телефоне подменяются env(safe-area-inset-*) */
+  --statusbar-h: 44px;
+  --touch-min: 44px;
+
+  /* межстрочный и трекинг */
+  --line-height-tight: 0.95;
+  --line-height-base: 1.5;
+  --line-height-arabic: 1.65;
+  --tracking-mono: 0.08em;
+  --tracking-display: -0.035em;
+  --tracking-arabic: 0.0em;
+
+  /* гарнитуры */
+  --font-primary: 'Readex Pro', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* фактура — одна на все поверхности.
+     Шаг 8.485 = 12 / √2: в тайле 12×12 линии идут по диагонали, и расстояние
+     между ними по перпендикуляру меньше стороны квадрата в корень из двух раз.
+     В CSS-градиенте шаг задаётся именно по перпендикуляру — отсюда пересчёт. */
+  --texture-step: 8.485px;
+  /* Значение подставляется там, где объявлено: в дневной теме `--texture-hatch`
+     объявлен заново (semantics.css), иначе он несёт ночную линию (№140). */
+  --texture-hatch:
+    repeating-linear-gradient(45deg,  var(--texture-line) 0 1px, transparent 1px var(--texture-step)),
+    repeating-linear-gradient(-45deg, var(--texture-line) 0 1px, transparent 1px var(--texture-step));
+
+  /* движение */
+  --motion-press: 120ms ease-out;
+  --motion-move: 240ms cubic-bezier(.32,.72,0,1);
+  --motion-count: 640ms ease-out;
+  --motion-orbit: 900ms cubic-bezier(.65,0,.35,1);
+  --motion-day: 86400s linear;
+}

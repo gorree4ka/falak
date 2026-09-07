@@ -1,0 +1,137 @@
+.screen {
+  position: relative;
+  inline-size: 393px;
+  block-size: 852px;
+  overflow: hidden;
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  direction: rtl;
+}
+
+/* Подложка и затемнение — те же, что у «Как посчитано»: главный не исчезает, он приглушён. */
+.backdrop { position: absolute; inset-block-start: 84px; inset-inline-start: 0; }
+.backdrop > svg { position: absolute; inset-inline-start: -25px; inset-block-start: -61px; }
+.scrim { position: absolute; inset: 0; background: var(--surface-canvas); opacity: .55;
+  animation: scrim-in var(--motion-move) both; }
+@keyframes scrim-in { from { opacity: 0; } }
+@keyframes sheet-rise { from { transform: translateY(48px); opacity: 0; } }
+
+.sheet {
+  position: absolute; inset-inline: 0; inset-block-end: 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding-block: 0 var(--space-safe-bottom);
+  background-image:
+    var(--texture-hatch),
+    linear-gradient(to bottom, var(--sheet-sheen) 0%, var(--sheet-veil) 55%, var(--sheet-veil) 100%);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-start-start-radius: 24px; border-start-end-radius: 24px;
+  border-block-start: 1px solid var(--border-strong);
+  animation: sheet-rise 320ms cubic-bezier(.32,.72,0,1) both;
+}
+
+.handle {
+  display: flex; flex: none; justify-content: center; align-items: flex-start; align-self: center;
+  position: relative;
+  inline-size: calc(var(--space-12) * 2); block-size: var(--space-6);
+  padding: var(--space-3) 0 0; border: none; background: none;
+  border-radius: var(--radius-full); touch-action: none; user-select: none; cursor: pointer;
+}
+/* Полоска рисуется на 24, а нажимается на 44 — как на главном и в расчёте. */
+.handle::after {
+  content: ''; position: absolute;
+  inset-inline: 0; inset-block: calc((var(--touch-min) - var(--space-6)) / -2);
+}
+.handle > span {
+  inline-size: var(--space-12); block-size: var(--space-1);
+  border-radius: var(--radius-full); background: var(--text-faint);
+  transition: background-color var(--motion-press);
+}
+@media (hover: hover) { .handle:hover > span { background: var(--text-muted); } }
+.handle:focus-visible { outline: 2px solid var(--text-primary); outline-offset: calc(var(--space-1) * -1); }
+
+.header {
+  inline-size: 100%;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-4) var(--space-gutter) var(--space-1);
+}
+/* Заголовок и маркировка стоят в одну строку: имя обязательства бывает длинным,
+   и перенос ломал бы ряд шапки. Ужимается линия, а не текст. */
+.header > * { white-space: nowrap; flex: none; }
+.rule { flex: 1 1 0; min-inline-size: var(--space-4); block-size: 1px; background: var(--border-hairline); }
+.marking { color: var(--text-faint); }
+.title { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; }
+.close {
+  color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  inline-size: var(--touch-min); block-size: var(--touch-min);
+  margin: calc((var(--touch-min) - 14px) / -2);
+  border-radius: var(--radius-full);
+}
+.close:focus-visible { outline: 2px solid var(--text-primary); outline-offset: calc(var(--space-1) * -1); }
+
+/* сводка обязательства: сумма крупно, дата и вес строкой */
+.summary {
+  inline-size: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: var(--space-2) var(--space-gutter) var(--space-3);
+}
+.row { display: flex; align-items: center; gap: var(--space-3); }
+.grow { flex: 1; }
+.muted { color: var(--text-muted); }
+.faint { color: var(--text-faint); }
+.markHard, .markSoft { inline-size: 8px; block-size: 8px; border-radius: var(--radius-full); flex: none; }
+.markHard { background: var(--money-reserved); }
+.markSoft { box-shadow: inset 0 0 0 1.6px var(--money-reserved); }
+
+/* что обязательство делает с месяцем сейчас — и что станет после выбранного действия */
+.effect {
+  inline-size: 100%;
+  display: flex; flex-direction: column; gap: var(--space-1);
+  padding: var(--space-3) var(--space-gutter);
+  border-block-start: 1px solid var(--border-hairline);
+}
+
+/* жёсткое: причина названа словами, действия — за подтверждением */
+.notice {
+  inline-size: 100%;
+  display: flex; flex-direction: column; gap: var(--space-1);
+  padding: var(--space-3) var(--space-gutter) 0;
+  border-block-start: 1px solid var(--border-hairline);
+  color: var(--text-reserved);
+}
+
+.actions {
+  inline-size: 100%;
+  /* Три отдельных решения — три отдельные карточки: без зазора скруглённые края
+     сходятся и ряд читается одним блоком. Тот же зазор, что у путей покрытия. */
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3) var(--space-gutter) 0;
+  border-block-start: 1px solid var(--border-hairline);
+}
+.sectionHead { display: flex; align-items: center; gap: var(--space-3); padding-block-end: 6px; }
+
+/* Строка действия — ActionRow из кита: та же, что пути покрытия на нехватке. */
+.action {
+  display: flex; align-items: center; gap: var(--space-3);
+  inline-size: 100%; text-align: start; cursor: pointer;
+  padding: var(--space-3);
+  margin-block-end: var(--space-2);
+  border: 1px solid var(--border-hairline); border-radius: var(--radius-md);
+  background: var(--surface-pressed); color: inherit; font: inherit;
+  transition: background-color var(--motion-press), border-color var(--motion-press);
+}
+@media (hover: hover) { .action:hover { border-color: var(--border-strong); } }
+.action:active { background: var(--surface-raised); }
+.action:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.action[data-on='true'] { border-color: var(--money-free); }
+.actionText { display: flex; flex: 1; flex-direction: column; gap: 2px; min-inline-size: 0; }
+
+/* правка суммы: поле кита, значение — своё, подсказок нет */
+.edit { inline-size: 100%; padding: 0 var(--space-gutter) var(--space-2); }
+
+/* подтверждение для жёсткого: второй шаг, а не второе касание той же строки */
+.confirm {
+  inline-size: 100%;
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-2) var(--space-gutter) 0;
+}

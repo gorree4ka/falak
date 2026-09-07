@@ -1,0 +1,16 @@
+{
+  "name": "Falak",
+  "prototype_url": "",
+  "storybook_url": "",
+  "collector_url": "",
+  "figma": {
+    "file_key": "9PhUCqXUownqvFNyPyfB2f",
+    "pages": {
+      "screens": "0:1"
+    },
+    "sections": {
+      "screens": "28:2",
+      "kit": "4:2"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+/*
+  Вкладки — не ещё одна шторка, а плита, на которой стоит прибор. Поэтому
+  поверхность **глубже** холста, а не светлее: холст несёт кольцо, шторка
+  ложится на него стеклом, вкладки уходят под оба. Три материала, три глубины —
+  и ни одной тени, которых в системе нет.
+*/
+.bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding-block: var(--space-3) var(--space-safe-bottom);
+  padding-inline: var(--space-5);
+  border-block-start: 1px solid var(--border-hairline);
+  background-color: var(--surface-well);
+  background-image: var(--texture-hatch);
+}
+.tab {
+  position: relative;
+  padding: 0; border: none; background: none; font: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+  color: var(--text-faint);
+  cursor: pointer;
+  min-inline-size: var(--touch-min);
+  transition: color var(--motion-press);
+}
+.active { color: var(--text-free); }
+/*
+  Засечка на кромке плиты — там же, где на кольце стоит засечка «сегодня».
+  Место открытого раздела читается положением, а не только цветом; центрируется
+  физическим `left`, потому что это центровка, а не сторона — от направления
+  письма она не зависит.
+*/
+.active::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc((var(--space-3) + 1px) * -1);
+  left: calc(50% - 10px);
+  inline-size: 20px; block-size: 2px;
+  border-radius: 0 0 1px 1px;
+  background: currentColor;
+}
+/*
+  Иконка 20 + зазор 8 + подпись 13 дают 41, а контракт просит 44. Недостающие
+  три добираются зоной нажатия наружу — в собственные поля плиты, — а не ростом
+  вкладки: рост плиты записан числом и в макете, и в отступах шторки.
+*/
+.tab::after {
+  content: ''; position: absolute;
+  inset-inline: 0; inset-block: -2px;
+}
+.tab:active { color: var(--text-muted); }
+.active:active { color: var(--text-free); }

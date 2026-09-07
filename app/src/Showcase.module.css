@@ -1,0 +1,120 @@
+.page {
+  min-block-size: 100vh;
+  padding: var(--space-12) var(--space-8) var(--space-16);
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  direction: rtl;
+}
+.head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6);
+  max-inline-size: 1200px; margin-inline: auto; margin-block-end: var(--space-12);
+  direction: ltr;
+}
+.sub { color: var(--text-muted); margin: var(--space-2) 0 0; max-inline-size: 60ch; }
+.section { max-inline-size: 1200px; margin-inline: auto; margin-block-end: var(--space-16); direction: ltr; }
+.h2 {
+  color: var(--text-faint); text-transform: uppercase;
+  letter-spacing: .1em; font-family: var(--font-mono); font-size: var(--size-xs);
+  margin: 0 0 var(--space-5); padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+/* кадр устройства */
+.frames { display: flex; gap: var(--space-12); align-items: flex-start; flex-wrap: wrap; }
+.device {
+  inline-size: 393px; block-size: 852px; flex: none;
+  position: relative; overflow: hidden;
+  border-radius: 44px;
+  background: var(--surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  display: flex; flex-direction: column;
+  direction: rtl;
+}
+.statusbar {
+  block-size: 44px; display: flex; align-items: center; justify-content: flex-start;
+  padding-inline: var(--space-6); color: var(--text-primary);
+}
+.orbitZone {
+  block-size: 319px; position: relative;
+}
+.orbitZone > svg { position: absolute; inset-inline-start: -25px; inset-block-start: -61px; }
+
+.until { color: var(--text-muted); }
+.marking { color: var(--text-reserved); }
+.line { color: var(--text-muted); }
+.faint { color: var(--text-faint); }
+.free { color: var(--text-free); }
+.grow { flex: 1; }
+
+.sheet {
+  flex: 1; margin-block-start: auto;
+  background: var(--surface-raised);
+  border-start-start-radius: 24px; border-start-end-radius: 24px;
+  border-block-start: 1px solid var(--border-strong);
+  padding: var(--space-5) var(--space-gutter) 0;
+  display: flex; flex-direction: column; gap: var(--space-4);
+  overflow: hidden;
+}
+.sheetRow { display: flex; align-items: center; gap: var(--space-2); }
+.people { display: flex; justify-content: space-between; }
+
+/* панель живого расчёта */
+.panel {
+  inline-size: 460px; flex: 1 1 380px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  direction: rtl;
+}
+.panel h3 { margin: 0; color: var(--text-primary); }
+.formula { margin-block: var(--space-5); }
+.fRow { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-2); }
+.fRow[data-rule='true'] { border-block-start: 1px solid var(--border-hairline); margin-block-start: var(--space-1); }
+.reserved { color: var(--text-reserved); }
+.primary { color: var(--text-primary); }
+.list { border-block-start: 1px solid var(--border-hairline); padding-block-start: var(--space-3); }
+
+/* палитра */
+.group { margin-block-end: var(--space-6); }
+.groupName { color: var(--text-faint); display: block; margin-block-end: var(--space-3); }
+.swatches { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.swatch { inline-size: 150px; }
+.chipColor {
+  display: block; block-size: 46px; border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+}
+.swatchName { color: var(--text-faint); display: block; margin-block-start: var(--space-1); }
+
+/* типографика */
+.type { display: flex; flex-direction: column; gap: var(--space-5); }
+.typeRow { display: flex; align-items: baseline; gap: var(--space-6); }
+.typeRow > span:last-child { color: var(--text-primary); }
+.typeRow > span:first-child { inline-size: 210px; flex: none; }
+
+/* кит */
+.kit { display: flex; gap: var(--space-12); flex-wrap: wrap; }
+.kitItem { display: flex; flex-direction: column; gap: var(--space-3); }
+.kitRow { display: flex; align-items: center; gap: var(--space-4); }
+
+/* проверка совпадений: кольцо крупным планом, по одному случаю на карточку */
+.cases { display: flex; gap: var(--space-6); flex-wrap: wrap; }
+.case {
+  inline-size: 268px;
+  display: flex; flex-direction: column; gap: var(--space-2);
+  direction: rtl; text-align: start;
+}
+.case > span:nth-child(2) { color: var(--text-primary); direction: ltr; }
+.case > span:nth-child(3) { direction: ltr; }
+.caseRing {
+  inline-size: 268px; block-size: 268px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  overflow: hidden; position: relative;
+}
+.caseRing > svg {
+  position: absolute;
+  inset-block-start: 50%; inset-inline-start: 50%;
+  transform: translate(50%, -50%) scale(.58);
+}

@@ -1,0 +1,7 @@
+.wrap { display: inline-flex; align-items: center; gap: var(--space-3); }
+.currency { color: var(--text-muted); }
+.primary  { color: var(--text-primary); }
+.free     { color: var(--text-free); }
+.reserved { color: var(--text-reserved); }
+.short    { color: var(--text-short); }
+.muted    { color: var(--text-muted); }

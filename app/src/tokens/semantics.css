@@ -1,0 +1,140 @@
+/* Semantic — два режима, как в Figma. Ни одного прибитого значения. */
+/* Ночь ведущая: она в :root, день включается [data-theme="day"] (CONTRACT №16). */
+:root {
+  --surface-canvas: var(--ink-900);
+  --surface-raised: var(--ink-800);
+  --surface-pressed: var(--ink-700);
+  --surface-well: var(--ink-850);   /* плита вкладок: ступень между холстом и шторкой */
+  --surface-inverse: var(--sand-00);
+  --surface-free: var(--jade-900);
+  --surface-reserved: var(--brass-900);
+  --surface-short: var(--clay-900);
+  --text-primary: var(--ink-00);
+  --text-muted: var(--ink-200);
+  --text-faint: var(--ink-300);
+  --text-inverse: var(--sand-950);
+  --text-free: var(--jade-300);
+  --text-reserved: var(--brass-300);
+  --text-short: var(--clay-300);
+  --border-hairline: var(--ink-600);
+  --border-strong: var(--ink-400);
+  --border-free: var(--jade-300);
+  --border-short: var(--clay-300);
+  --money-free: var(--jade-300);
+  --money-reserved: var(--brass-300);
+  --money-short: var(--clay-300);
+  --money-past: var(--ink-400);
+  --money-free-graphic: var(--jade-400);
+  --money-reserved-graphic: var(--brass-400);
+  --money-short-graphic: var(--clay-400);
+  --orbit-track: var(--ink-600);
+  --orbit-tick-major: var(--ink-400);
+  --orbit-elapsed: var(--ink-400);
+  --orbit-today: var(--jade-300);
+  --orbit-mark: var(--ink-00);
+  --orbit-mark-past: var(--ink-400);
+  --orbit-mark-saving: var(--brass-300);
+  --orbit-engraving: var(--brass-400);
+  --orbit-numeral: var(--ink-300);
+  --orbit-arc-short: var(--clay-400);
+  --orbit-remaining: var(--ink-200);
+  --glow-core-free: var(--jade-200);
+  --glow-core-reserved: var(--brass-200);
+  --action-primary: var(--jade-300);
+  --action-primary-pressed: var(--jade-500);
+  --text-on-action: var(--ink-950);
+
+  /* отсвет у верхней кромки плашки состояния: свой на каждый режим */
+  --sheen-free: var(--jade-850);
+  --sheen-reserved: var(--brass-850);
+  --sheen-short: var(--clay-850);
+
+  /* фактура: на чернилах светлая линия, на известняке тёмная */
+  --texture-line: rgb(255 255 255 / .012);
+  --texture-svg: #ffffff;
+  --texture-svg-opacity: .02;
+
+  /* свет — только ночью (CONTRACT №20) */
+  --glow-today: 0 0 10px 1px rgb(111 224 174 / .75), 0 0 28px 4px rgb(63 194 142 / .45);
+  --glow-mark: 0 0 10px rgb(232 194 122 / .45);
+  --glow-short: 0 0 14px rgb(232 145 106 / .45);
+  --glow-dot: drop-shadow(0 0 6px rgb(111 224 174 / .8));
+  --glow-short-dot: drop-shadow(0 0 6px rgb(232 145 106 / .8));
+  /* Насколько шторка кроет прибор. Ниже 0.7 сквозь неё читаются засечки
+     и мешают тексту; выше 0.85 прозрачности не видно вовсе. */
+  --sheet-veil: rgb(25 36 31 / .72);
+  --sheet-sheen: rgb(34 48 42 / .72);
+  --shadow-none: none;
+}
+
+[data-theme="day"] {
+  --surface-canvas: var(--sand-50);
+  --surface-raised: var(--sand-00);
+  --surface-pressed: var(--sand-100);
+  --surface-well: var(--sand-100);  /* в дневном регистре плита тоже глубже холста, а не светлее */
+  --surface-inverse: var(--sand-950);
+  --surface-free: var(--jade-100);
+  --surface-reserved: var(--brass-100);
+  --surface-short: var(--clay-100);
+  --text-primary: var(--sand-950);
+  --text-muted: var(--sand-700);
+  --text-faint: var(--sand-500);
+  --text-inverse: var(--sand-00);
+  --text-free: var(--jade-700);
+  --text-reserved: var(--brass-700);
+  --text-short: var(--clay-700);
+  --border-hairline: var(--sand-200);
+  --border-strong: var(--sand-300);
+  --border-free: var(--jade-500);
+  --border-short: var(--clay-500);
+  --money-free: var(--jade-500);
+  --money-reserved: var(--brass-500);
+  --money-short: var(--clay-500);
+  --money-past: var(--sand-300);
+  --money-free-graphic: var(--jade-500);
+  --money-reserved-graphic: var(--brass-500);
+  --money-short-graphic: var(--clay-500);
+  --orbit-track: var(--sand-200);
+  --orbit-tick-major: var(--sand-300);
+  --orbit-elapsed: var(--sand-300);
+  --orbit-today: var(--jade-500);
+  --orbit-mark: var(--sand-950);
+  --orbit-mark-past: var(--sand-300);
+  --orbit-mark-saving: var(--brass-500);
+  --orbit-engraving: var(--sand-300);
+  --orbit-numeral: var(--sand-500);
+  --orbit-arc-short: var(--clay-500);
+  --orbit-remaining: var(--sand-700);
+  --glow-core-free: var(--jade-500);
+  --glow-core-reserved: var(--brass-500);
+  --action-primary: var(--jade-700);
+  --action-primary-pressed: var(--jade-800);
+  --text-on-action: var(--sand-00);
+
+  --sheen-free: var(--jade-50);
+  --sheen-reserved: var(--brass-50);
+  --sheen-short: var(--clay-50);
+
+  --texture-line: rgb(19 30 26 / .028);
+  --texture-svg: #131e1a;
+  --texture-svg-opacity: .03;
+  /*
+    Фактуру приходится объявлять заново в каждой теме, и это не дубль.
+    var() внутри пользовательского свойства подставляется там, где свойство
+    **объявлено**: `--texture-hatch` с :root уже несёт ночную белую линию, и
+    экран в дневной теме наследует её готовой. Белая штриховка на известняке
+    невидима — шторка выглядела гладкой рядом с фактурным диском (№140).
+  */
+  --texture-hatch:
+    repeating-linear-gradient(45deg,  var(--texture-line) 0 1px, transparent 1px var(--texture-step)),
+    repeating-linear-gradient(-45deg, var(--texture-line) 0 1px, transparent 1px var(--texture-step));
+
+  /* днём прибор не светится: иерархия строится краской */
+  --glow-today: none;
+  --glow-mark: none;
+  --glow-short: none;
+  --glow-dot: none;
+  --glow-short-dot: none;
+  --sheet-veil: rgb(246 241 231 / .78);
+  --sheet-sheen: rgb(229 221 204 / .78);
+}

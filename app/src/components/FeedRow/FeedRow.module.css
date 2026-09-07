@@ -1,0 +1,13 @@
+/* Мастер 7:35: строка 47 плюс разделитель под ней — 48. Линия разделяет, а не обводит:
+   она стоит под строкой, и у последней её нет (CONTRACT №9). Над первой строкой линии нет. */
+.row {
+  display: flex; align-items: center; gap: var(--space-2);
+  min-block-size: 48px;
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+}
+.row[data-last='true'] { border-block-end: none; min-block-size: 47px; }
+.spacer { flex: 1; }
+.amount { color: var(--text-primary); }
+.detail { color: var(--text-faint); }
+.group  { color: var(--text-primary); }

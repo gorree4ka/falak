@@ -1,0 +1,116 @@
+/* TextStyles из Figma. Цвет в класс не зашит — он приходит семантикой. */
+.ds-display-amount-hero {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: var(--size-6xl);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+}
+.ds-display-amount-xl {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--size-5xl);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.ds-display-amount-lg {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--size-4xl);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.ds-display-amount-md {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--size-3xl);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+}
+.ds-amount-lg {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--size-2xl);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.ds-amount-base {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--size-lg);
+  line-height: 1.2;
+  letter-spacing: 0.0em;
+}
+.ds-heading-xl {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: var(--size-xl);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.ds-body-lg {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: var(--size-lg);
+  line-height: 1.5;
+  letter-spacing: 0.0em;
+}
+.ds-body-base {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: var(--size-base);
+  line-height: 1.5;
+  letter-spacing: 0.0em;
+}
+.ds-body-sm {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: var(--size-sm);
+  line-height: 1.5;
+  letter-spacing: 0.0em;
+}
+.ds-body-sm-medium {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: var(--size-sm);
+  line-height: 1.5;
+  letter-spacing: 0.0em;
+}
+.ds-label-xs {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: var(--size-xs);
+  line-height: 1.4;
+  letter-spacing: 0.0em;
+}
+.ds-mono-sm {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--size-sm);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+/* Маркировка прибора — DS/Marking/sm из кита: моно Medium 11, трекинг 14 %.
+   Цвет не зашит: text-faint или text-reserved приходит с места. */
+.ds-marking {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--size-xs);
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+}
+.ds-mono-xs {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--size-xs);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+/* арабский набирается без разрядки — письмо связное (CONTRACT правила локали) */
+[lang="ar"] .ds-mono-sm,
+[lang="ar"] .ds-mono-xs { letter-spacing: 0; }
+
+/* числа всегда табличные */
+.ds-display-amount-hero, .ds-display-amount-xl, .ds-display-amount-lg,
+.ds-display-amount-md, .ds-amount-lg, .ds-amount-base,
+.ds-mono-sm, .ds-mono-xs { font-variant-numeric: tabular-nums; }

@@ -1,0 +1,144 @@
+.root { display: block; overflow: visible; pointer-events: none; }
+
+/* мини-орбита: тот же круг в 96, без гравировки */
+.mini { display: block; overflow: visible; flex: none; }
+.miniTrack { fill: none; stroke: var(--orbit-track); stroke-width: 1.5; }
+.miniRemaining { fill: none; stroke: var(--orbit-remaining); stroke-width: 1.5; opacity: .85; }
+.root .hit { pointer-events: auto; }
+
+/* обод прибора */
+.ringOuter {
+  fill: none;
+  stroke: var(--orbit-engraving);
+  stroke-width: 1;
+  opacity: .8;
+}
+
+/* поле гравировки */
+.tickPast, .tickAhead, .tickToday { stroke-linecap: butt; }
+.tickPast  { stroke: var(--orbit-engraving); stroke-width: 1; opacity: .9; }
+.tickAhead { stroke: var(--orbit-numeral);   stroke-width: 1; opacity: .45; }
+.tickToday { stroke: var(--orbit-today);     stroke-width: 1.5; }
+
+/* индекс начала месяца — структура, а не показание */
+.originLine  { stroke: var(--orbit-engraving); stroke-width: 2; }
+.originIndex { fill: var(--orbit-engraving); }
+
+.numeral {
+  fill: var(--orbit-numeral);
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: var(--tracking-mono);
+}
+
+/* месяц */
+.arcTrack {
+  fill: none;
+  stroke: var(--orbit-track);
+  stroke-width: 3;
+}
+.arcRemaining {
+  fill: none;
+  stroke: url(#falak-remaining);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+
+.disc { fill: var(--surface-raised); }
+/* следы резца: волосяная разметка прибора, полштриха, гаснет к кругу суток */
+.turning circle { fill: none; stroke: var(--border-hairline); stroke-width: .5; }
+.discRim {
+  fill: none;
+  stroke: var(--border-hairline);
+  stroke-width: 1;
+}
+
+/* сутки */
+.dayTrack {
+  fill: none;
+  stroke: var(--orbit-track);
+  stroke-width: 1.5;
+  opacity: .55;
+}
+/*
+  Секундная стрелка. Своей шкалы у неё нет и быть не должно: ни одной подписи,
+  ни дорожки — иначе угол на суточном круге получил бы второе значение. Она
+  читается как ход прибора, а не как показание, и потому волосяная и тихая.
+*/
+.seconds { animation: falak-seconds 60s linear infinite; }
+/* Цвет — «сегодня»: секунды принадлежат тем же суткам, что сегмент, и других
+   значений не несут. Плотность низкая: это ход прибора, а не показание. */
+.secondsMark { fill: var(--orbit-today); opacity: .62; }
+.secondsTail { fill: none; stroke: var(--orbit-today); stroke-width: 1.2; opacity: .2; stroke-linecap: round; }
+@keyframes falak-seconds { to { transform: rotate(360deg); } }
+/* Просьбу поменьше двигать стрелка уважает буквально: движение — вся её суть. */
+@media (prefers-reduced-motion: reduce) { .seconds { display: none; } }
+
+.dayElapsed {
+  fill: none;
+  stroke: var(--orbit-today);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: .85;
+  stroke-linecap: round;
+}
+
+/* метки */
+.markHard { fill: var(--money-reserved); }
+.markSoft {
+  fill: none;
+  stroke: var(--money-reserved);
+  stroke-width: 1.6;
+}
+.markPast {
+  fill: none;
+  stroke: var(--money-past);
+  stroke-width: 1.2;
+}
+
+/* сегодня */
+.todayTick { stroke: var(--orbit-today); stroke-width: 2; }
+.todayDot  { fill: var(--orbit-today); filter: var(--glow-dot); }
+
+/* Нехватка: дуга сообщает не время, а состояние денег, и глина на ней законна.
+   Метка «сейчас» окрашивается тем же — форма постоянна, цвет говорит о состоянии. */
+.short .arcRemaining { stroke: var(--orbit-arc-short); }
+.short .todayTick    { stroke: var(--money-short-graphic); }
+.short .todayDot     { fill: var(--money-short-graphic); filter: var(--glow-short-dot); }
+.short .todayLabel   { fill: var(--money-short); }
+.short .tickToday    { stroke: var(--money-short-graphic); }
+.short .dayElapsed   { stroke: var(--money-short-graphic); }
+/* составная метка: «сейчас» внутри, «зарезервировано» кольцом снаружи */
+.todayReservedHard { fill: none; stroke: var(--money-reserved); stroke-width: 2.4; }
+.todayReservedSoft { fill: none; stroke: var(--money-reserved); stroke-width: 1.6; stroke-dasharray: 3 2.4; }
+
+.selected {
+  fill: none;
+  stroke: var(--money-reserved);
+  stroke-width: 1;
+  opacity: .5;
+}
+.hit { fill: transparent; cursor: pointer; }
+/* Наведение на день — только под курсором: на пальце оно осталось бы гореть после тапа. */
+@media (hover: hover) { .hit:hover { fill: var(--money-reserved); fill-opacity: .06; } }
+/* Нажатие по дню подтверждается тем же полем, только плотнее: приседать кругу нечем. */
+.hit:active { fill: var(--money-reserved); fill-opacity: .14; }
+
+.todayLabel {
+  fill: var(--orbit-today);
+  font-family: var(--font-primary);
+  font-size: var(--size-xs);
+}
+
+.center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-align: center;
+  padding-inline: var(--space-6);
+  box-sizing: border-box;
+}

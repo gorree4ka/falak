@@ -1,0 +1,111 @@
+.screen {
+  position: relative;
+  inline-size: 393px; block-size: 852px; overflow: hidden;
+  background: var(--surface-canvas); color: var(--text-primary);
+  direction: rtl;
+  display: flex; flex-direction: column;
+}
+.grow { flex: 1; }
+.muted { color: var(--text-muted); }
+.faint { color: var(--text-faint); }
+
+/* шапка: заголовок по центру, «назад» у ведущего края */
+.header {
+  display: flex; align-items: center; flex: none;
+  block-size: 56px; padding-inline: var(--space-gutter);
+}
+.title { text-align: center; }
+.back {
+  padding: 0; border: none; background: none; font: inherit; color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  inline-size: var(--touch-min); block-size: var(--touch-min);
+  border-radius: var(--radius-full); cursor: pointer;
+  /* цель 44, глиф на линии поля: рамка растёт наружу к краю кадра */
+  margin-inline-start: calc((var(--touch-min) - 20px) / -2);
+}
+.backGhost { inline-size: 20px; flex: none; }
+.back:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -4px; }
+
+/* получатель */
+.recipient {
+  display: flex; align-items: center; gap: var(--space-4); flex: none;
+  padding: var(--space-4) var(--space-gutter) var(--space-2);
+}
+/* Ряд получателя нажимается целиком: шеврон обещает выбор, значит выбор открывается им же. */
+.recipient { cursor: pointer; text-align: start; font: inherit; color: inherit; background: none; border: none; }
+.recipient:active { background: var(--surface-pressed); }
+.recipient:focus-visible { outline: 2px solid var(--text-primary); outline-offset: calc(var(--space-1) * -1); }
+
+/* выбор получателя: не отдельный экран, а список тут же — решение остаётся одним */
+.picker { display: flex; flex-direction: column; padding: 0 var(--space-gutter) var(--space-2); }
+.pick {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2); text-align: start; font: inherit; color: inherit;
+  background: none; border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer;
+  transition: background-color var(--motion-press), border-color var(--motion-press);
+}
+@media (hover: hover) { .pick:hover { border-color: var(--border-hairline); } }
+.pick:active { background: var(--surface-pressed); }
+.pick:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); }
+.avatarSm {
+  inline-size: 40px; block-size: 40px; border-radius: var(--radius-full); flex: none;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-pressed); box-shadow: inset 0 0 0 1px var(--border-hairline);
+  font-family: var(--font-primary); font-size: var(--size-base); color: var(--text-primary);
+}
+
+/* Ввод суммы: вид даёт AmountField, значение принимает input внутри той же метки.
+   Он невидим, но досягаем — нажатие на число ставит в него фокус и поднимает клавиатуру. */
+.amountField { display: block; position: relative; cursor: text; }
+.amountInput {
+  position: absolute; inset-block-start: 0; inset-inline-start: 0;
+  inline-size: 1px; block-size: 1px; opacity: 0; border: 0; padding: 0;
+}
+.amountField:focus-within { outline: 2px solid var(--text-primary); outline-offset: var(--space-2); border-radius: var(--radius-md); }
+
+.avatar {
+  inline-size: 72px; block-size: 72px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  color: var(--text-muted); font-size: var(--size-xl); font-weight: var(--weight-medium);
+}
+.who { display: flex; flex: 1; flex-direction: column; gap: 2px; min-inline-size: 0; }
+
+/* сумма */
+.amount {
+  display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; flex: none;
+  padding: var(--space-4) var(--space-gutter) 0;
+}
+/* ряд у ведущего края: в колонке RTL это flex-start, то есть справа — как в кадре */
+.quick { display: flex; gap: var(--space-2); }
+.release {
+  position: relative;
+  padding: 0; border: none; background: none; font: inherit;
+  display: flex; align-items: center; gap: 6px; color: var(--text-short); cursor: pointer;
+  min-block-size: var(--space-6);
+}
+/* Строка рисуется на 24, а нажимается на 44: зона расширяется наружу, содержимое не едет. */
+.release::after {
+  content: ''; position: absolute;
+  inset-inline: 0; inset-block: calc((var(--touch-min) - var(--space-6)) / -2);
+}
+
+/* факты — та же лента, что на главном */
+.facts { display: flex; flex-direction: column; flex: none; padding: var(--space-4) var(--space-gutter) 0; }
+
+/* плашка плана */
+.plate {
+  display: flex; flex-direction: column; gap: var(--space-3); flex: none;
+  margin: var(--space-4) var(--space-gutter) 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+.execute { display: flex; align-items: center; gap: var(--space-3); }
+.result { display: flex; align-items: center; gap: var(--space-4); }
+.numbers { display: flex; flex-direction: column; gap: var(--space-1); align-items: flex-start; }
+
+/* подтверждение — над полосой устройства */
+.confirm { flex: none; padding: 0 var(--space-gutter) var(--space-safe-bottom); }

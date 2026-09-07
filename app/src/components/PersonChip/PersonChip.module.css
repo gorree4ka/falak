@@ -1,0 +1,34 @@
+.chip {
+  padding: 0; border: none; background: none; font: inherit; color: inherit;
+  inline-size: 84px;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-1);
+  cursor: pointer;
+}
+.avatarWrap { position: relative; transition: transform var(--motion-press); }
+/* Нажатие подтверждает аватар: подпись под ним при этом стоит на месте. */
+.chip:active .avatarWrap { transform: scale(.94); }
+.chip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: var(--space-1); border-radius: var(--radius-md); }
+.avatar, .add {
+  inline-size: 48px; block-size: 48px; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-primary); font-size: var(--size-xl);
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 1px var(--border-hairline);
+  color: var(--text-primary);
+}
+/* аватар нейтрален: цвет отвечает за состояние денег, а не за вид объекта */
+.add {
+  background: none;
+  box-shadow: none;
+  border: 1px dashed var(--border-strong);
+  color: var(--text-faint);
+}
+.stateHard, .stateSoft {
+  position: absolute; inset-block-start: -1px; inset-inline-start: -1px;
+  inline-size: 9px; block-size: 9px; border-radius: var(--radius-full);
+  box-sizing: content-box; border: 2px solid var(--surface-raised);
+}
+.stateHard { background: var(--money-reserved); }
+.stateSoft { background: var(--surface-raised); box-shadow: inset 0 0 0 1.8px var(--money-reserved); }
+.name { color: var(--text-primary); }
+.meta { color: var(--text-faint); }

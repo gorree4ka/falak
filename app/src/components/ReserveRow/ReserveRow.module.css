@@ -1,0 +1,29 @@
+/* Рост строки — 48 из кита: содержимое 35 (название 18 + 2 + дата 15)
+   центрируется, по 6.5 сверху и снизу. При 12/12 строка вырастала до 60,
+   пять строк давали +88, и шторка расчёта поднималась во весь экран. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: 48px;
+  padding-block: var(--space-1);
+}
+.spacer { flex: 1; }
+/* Строка во всю ширину не приседает — отклик у неё подложка (правило `mute_press`). */
+.row:active { background: var(--surface-pressed); border-radius: var(--radius-md); }
+.amount { color: var(--text-reserved); transition: color var(--motion-move), opacity var(--motion-move); }
+.text { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; color: var(--text-primary); }
+.date { color: var(--text-faint); }
+
+/* снятое обязательство гаснет — деньги вернулись в свободные */
+.row[data-held='false'] .amount { opacity: .35; text-decoration: line-through; }
+.row[data-held='false'] .text { opacity: .5; }
+
+/* форма метки та же, что на кольце */
+.markHard, .markSoft {
+  inline-size: 8px; block-size: 8px; border-radius: var(--radius-full); flex: none;
+}
+.markHard { background: var(--money-reserved); }
+.markSoft { box-shadow: inset 0 0 0 1.6px var(--money-reserved); }
+.row[data-held='false'] .markHard,
+.row[data-held='false'] .markSoft { opacity: .3; }

@@ -117,6 +117,11 @@
   --texture-hatch:
     repeating-linear-gradient(45deg,  var(--texture-line) 0 1px, transparent 1px var(--texture-step)),
     repeating-linear-gradient(-45deg, var(--texture-line) 0 1px, transparent 1px var(--texture-step));
+  /* зерно известняка — фон экрана, 4 %. Тайл 128×128 общий с Figma
+     (`assets/grain.png`): здесь тот же серый шум с альфой 10/255, и
+     нормальное смешение даёт ту же арифметику, что слой IMAGE @ 4 % в макете.
+     Зерно у пространства, штрих у предметов: на поверхности оно не ложится. */
+  --texture-grain: url('/textures/grain.png');
 
   /* движение */
   --motion-press: 120ms ease-out;

@@ -13,6 +13,9 @@
   stroke-width: 1;
   opacity: .8;
 }
+/* Латунь под зенитным светом: верх обода светлее, низ в тени. Только у большого
+   прибора — на 96 px градиент не читается, и мини остаётся сплошной, как в ките. */
+.ringLit { stroke: url(#falak-engraving); }
 
 /* поле гравировки */
 .tickPast, .tickAhead, .tickToday { stroke-linecap: butt; }
@@ -45,11 +48,15 @@
 }
 
 .disc { fill: var(--surface-raised); }
+/* колодец: ядро `well-core`, прозрачный край на 62 % радиуса; днём ядро равно диску */
+.well { fill: url(#falak-well); }
 /* следы резца: волосяная разметка прибора, полштриха, гаснет к кругу суток */
 .turning circle { fill: none; stroke: var(--border-hairline); stroke-width: .5; }
+/* кромка диска освещена сверху: латунь у зенита, волосяная линия в тени; вся на половине силы */
 .discRim {
   fill: none;
-  stroke: var(--border-hairline);
+  stroke: url(#falak-rim);
+  stroke-opacity: .5;
   stroke-width: 1;
 }
 
@@ -83,8 +90,9 @@
   stroke-linecap: round;
 }
 
-/* метки */
-.markHard { fill: var(--money-reserved); }
+/* метки. Жёсткая горит изнутри: ядро на ступень светлее и гало того же цвета —
+   свет несёт состояние денег (CONTRACT №20). Подвижная — контур, ей гореть нечем. */
+.markHard { fill: url(#falak-mark-core); filter: var(--glow-mark-dot); }
 .markSoft {
   fill: none;
   stroke: var(--money-reserved);

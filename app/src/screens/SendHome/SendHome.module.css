@@ -1,7 +1,7 @@
 .screen {
   position: relative;
   inline-size: 393px; block-size: 852px; overflow: hidden;
-  background: var(--surface-canvas); color: var(--text-primary);
+  background: var(--texture-grain) var(--surface-canvas); color: var(--text-primary);
   direction: rtl;
   display: flex; flex-direction: column;
 }

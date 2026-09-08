@@ -3,7 +3,7 @@
   inline-size: 393px;
   block-size: 852px;
   overflow: hidden;
-  background: var(--surface-canvas);
+  background: var(--texture-grain) var(--surface-canvas);
   color: var(--text-primary);
   direction: rtl;
 }
@@ -31,7 +31,7 @@
      в ровный тон, и шторка читалась непрозрачной (№133). */
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   border-start-start-radius: 24px; border-start-end-radius: 24px;
-  border-block-start: 1px solid var(--border-strong);
+  border-block-start: 1px solid var(--sheet-edge);
   /* Шторка приходит снизу, главный под ней стоит на месте — поэтому вход экрана выключен на корне. */
   animation: sheet-rise 320ms cubic-bezier(.32,.72,0,1) both;
 }

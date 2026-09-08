@@ -11,16 +11,18 @@
 
 ## Figma
 
-- **Файл:** https://www.figma.com/design/9PhUCqXUownqvFNyPyfB2f
+- **Файл:** https://www.figma.com/design/9PhUCqXUownqvFNyPyfB2f — доступ закрыт, анонимному гостю отдаётся 403
+- **Дека:** https://www.figma.com/design/9PhUCqXUownqvFNyPyfB2f?node-id=447-417 — кадр `Falak · Case Study` в секции «Концепт-кейс»
 - **fileKey:** `9PhUCqXUownqvFNyPyfB2f` — он же в `project.json`
 - **Страницы:** экраны `<id>` · компоненты `<id>` · фундамент `<id>` — появятся после `ds-foundation`
 - **Не трогать:** ничего чужого в файле нет, файл создан под проект
 
 ## Notion
 
-- **PRD:** https://app.notion.com/p/3d257d58089081acb560f34caf46878f — приватный черновик
-- **База «Фичи · MoSCoW»:** 40 записей, фильтруется по приоритету, узлу, источнику и персоне
-- **Дочерние страницы:** «Персоны и интервью», «Конкурентный анализ»
+- **PRD:** https://app.notion.com/p/3d257d58089081acb560f34caf46878f — приватный черновик, снаружи не открывается. Открыто читается тот же PRD файлом в репозитории — [`prd.md`](https://github.com/gorree4ka/falak/blob/main/prd.md): те же 15 разделов, но без пяти схем — они живут встроенными в Notion
+- **База «Фичи · MoSCoW»:** https://app.notion.com/p/c29685c5509c49db87be5fb1eeea6cb9 — 40 записей, фильтруется по приоритету, узлу, источнику и персоне
+- **Персоны и интервью:** https://app.notion.com/p/3d257d580890819a8263ee0e75be4049
+- **Конкурентный анализ:** https://app.notion.com/p/3d257d580890814eb921c2723ac048cd
 - **Подключение:** `.mcp.json` в корне, удалённый сервер `https://mcp.notion.com/mcp`, авторизация OAuth. Токенов в файлах нет
 
 ## Прототип
@@ -36,7 +38,7 @@
 
 ## Репозиторий
 
-- **Remote:** https://github.com/gorree4ka/falak — приватный
+- **Remote:** https://github.com/gorree4ka/falak — публичный, читается без входа
 - **Ветка:** `main`
 - **Что коммитится:** `app/`, `ds/`, `ia/`, `execution/`, `dashboard/`, `audit/`, тексты кейса и исследования в корне, `vercel.json`, `README.md`
 - **Что не коммитится:** `node_modules/`, `dist/`, `.tmp/`, оригиналы фото `assets/photos/` (в сборку уезжают WebP из `app/public/photos/`), чужие репозитории навыков `assets/animations-skills/`, выгрузки истории

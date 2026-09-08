@@ -128,6 +128,13 @@ export function Orbit({
     const t = mAt(MR_ARC, today)
     return (
       <svg ref={svgRef} className={styles.mini} viewBox={`0 0 ${M} ${M}`} width={M} height={M} aria-hidden="true">
+        <defs>
+          {/* то же ядро метки, что у большого прибора: форма одна, диаметр другой */}
+          <radialGradient id="falak-mark-core" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stopColor="var(--mark-core)" />
+            <stop offset="1" stopColor="var(--money-reserved)" />
+          </radialGradient>
+        </defs>
         <circle className={styles.ringOuter} cx={MC} cy={MC} r={R_OUTER} />
         <circle className={styles.miniTrack} cx={MC} cy={MC} r={MR_ARC} />
         <path className={styles.miniRemaining} d={remaining} data-motion="arc" />
@@ -263,10 +270,32 @@ export function Orbit({
           <path d="M0 12 L12 0 M-3 3 L3 -3 M9 15 L15 9" stroke="var(--texture-svg)" strokeWidth="1" opacity="var(--texture-svg-opacity)" />
           <path d="M0 0 L12 12 M-3 9 L3 15 M9 -3 L15 3" stroke="var(--texture-svg)" strokeWidth="1" opacity="var(--texture-svg-opacity)" />
         </pattern>
+        {/*
+          Материал прибора — свет с источником (patterns.md). Колодец занимает
+          62 % радиуса диска, дальше плоскость `surface-raised`; обод и кромка
+          диска освещены с зенита; жёсткая метка горит изнутри. Днём все стопы
+          равны своей краске, и градиентов на приборе нет.
+        */}
+        <radialGradient id="falak-well" cx="50%" cy="50%" r="31%">
+          <stop offset="0" stopColor="var(--well-core)" stopOpacity="1" />
+          <stop offset="1" stopColor="var(--well-core)" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="falak-engraving" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--orbit-engraving-lit)" />
+          <stop offset="1" stopColor="var(--orbit-engraving-shade)" />
+        </linearGradient>
+        <linearGradient id="falak-rim" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--orbit-engraving-lit)" />
+          <stop offset="1" stopColor="var(--border-hairline)" />
+        </linearGradient>
+        <radialGradient id="falak-mark-core" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stopColor="var(--mark-core)" />
+          <stop offset="1" stopColor="var(--money-reserved)" />
+        </radialGradient>
       </defs>
 
       {/* обод прибора — он шире экрана и срезается кадром */}
-      <circle className={styles.ringOuter} cx={C} cy={C} r={R_OUTER - 0.5} data-motion="ring" />
+      <circle className={`${styles.ringOuter} ${styles.ringLit}`} cx={C} cy={C} r={R_OUTER - 0.5} data-motion="ring" />
 
       {/* поле гравировки: одна засечка на день, длина равна тратам этого дня */}
       {ticks.map((d) => {
@@ -313,6 +342,8 @@ export function Orbit({
 
       {/* диск */}
       <circle className={styles.disc} cx={C} cy={C} r={R_DISC} />
+      {/* колодец: число лежит глубже гравировки (foundation, «Свет») */}
+      <circle className={styles.well} cx={C} cy={C} r={R_DISC} />
       <circle cx={C} cy={C} r={R_DISC} fill="url(#falak-hatch)" />
       {/* материал, а не узор: концентрические следы резца, как на выточенном диске астролябии */}
       <g className={styles.turning} aria-hidden="true">

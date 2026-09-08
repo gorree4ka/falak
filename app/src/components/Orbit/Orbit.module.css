@@ -48,7 +48,7 @@
 }
 
 .disc { fill: var(--surface-raised); }
-/* колодец: ядро `well-core`, прозрачный край на 62 % радиуса; днём ядро равно диску */
+/* колодец: ядро `well-core`, прозрачный край за кромкой диска (124 % радиуса); днём ядро равно диску */
 .well { fill: url(#falak-well); }
 /* следы резца: волосяная разметка прибора, полштриха, гаснет к кругу суток */
 .turning circle { fill: none; stroke: var(--border-hairline); stroke-width: .5; }

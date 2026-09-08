@@ -42,7 +42,7 @@
 
 ```css
 .ringLit  { stroke: url(#falak-engraving); }   /* orbit-engraving-lit → orbit-engraving-shade */
-.well     { fill: url(#falak-well); }          /* well-core → прозрачный на 62 % радиуса */
+.well     { fill: url(#falak-well); }          /* well-core → прозрачный за кромкой диска */
 .markHard { fill: url(#falak-mark-core); filter: var(--glow-mark-dot); }
 ```
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { AmountField, Amount, Avatar, Button, FeedRow, Orbit, SliderConfirm, Toggle } from '../../components'
+import { AmountField, Amount, Avatar, Button, FeedRow, FlowNumber, Orbit, RateLock, SliderConfirm, Toggle } from '../../components'
 import { MONTH, MONEY, DAY, OBLIGATIONS, PAST_EVENTS, TRANSFER, RECIPIENTS, RECEIVES_EGP, money } from '../../data/fixture'
 import { StatusBar } from '../parts/StatusBar'
 import { go } from '../Router'
@@ -129,7 +129,7 @@ export function SendHome({ state = 'plan' }: ScreenProps) {
 
       <div className={styles.facts}>
         {/* Строки курса у местного перевода нет вовсе: валюта одна, и пустая строка врала бы о работе. */}
-        {!local && <FeedRow group="سعر الصرف" detail={`ثابت حتى ${TRANSFER.rateUntil}`} amount={String(TRANSFER.rate)} />}
+        {!local && <FeedRow group="سعر الصرف" detail={`ثابت حتى ${TRANSFER.rateUntil}`} amount={<RateLock value={String(TRANSFER.rate)} />} />}
         <FeedRow group="الرسوم" detail={local ? 'بلا رسوم' : `بلا رسوم حتى ${money(TRANSFER.feeFreeUpTo)} درهم شهريًا`} amount="0" />
         <FeedRow group="الوصول" detail={local ? 'الآن' : 'اليوم'} amount={who.arrival} last />
       </div>
@@ -150,13 +150,13 @@ export function SendHome({ state = 'plan' }: ScreenProps) {
             /* сумма больше доступного: то, чего не хватает, — глиной, в языке трёх состояний */
             <span className={styles.numbers}>
               <span className={`${styles.muted} ds-body-sm`}>ينقص</span>
-              <Amount value={money(-freeAfter)} currency="درهم" size="md" tone="short" />
+              <Amount value={money(-freeAfter)} currency="درهم" size="md" tone="short" flow />
             </span>
           ) : (
             <span className={styles.numbers}>
               <span className={`${styles.muted} ds-body-sm`}>يبقى حرًا</span>
-              <Amount value={money(freeAfter)} currency="درهم" size="md" tone="free" />
-              <span className={`${styles.faint} ds-mono-xs`}>نصيب اليوم {share}</span>
+              <Amount value={money(freeAfter)} currency="درهم" size="md" tone="free" flow />
+              <span className={`${styles.faint} ds-mono-xs`}>نصيب اليوم <FlowNumber value={share} /></span>
             </span>
           )}
           <span className={styles.grow} />

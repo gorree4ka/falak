@@ -1,6 +1,7 @@
 {
   "name": "Falak",
   "prototype_url": "https://falak-five.vercel.app",
+  "preview_url": "http://localhost:4199",
   "storybook_url": "",
   "collector_url": "",
   "figma": {

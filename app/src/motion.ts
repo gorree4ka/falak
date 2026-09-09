@@ -115,3 +115,58 @@ export function countUp(el: HTMLElement, to: number) {
   })
   return () => tween.kill()
 }
+
+/**
+ * Число перетекает от прежнего значения к новому: так на переводе видно, что
+ * «останется свободным» — результат, который пересчитался от выбора, а не
+ * подменился. От нуля считают только при появлении (`countUp`); при смене
+ * входа число едет от того, что человек только что видел.
+ */
+export function countTo(el: HTMLElement, from: number, to: number) {
+  if (reducedMotion() || !Number.isFinite(from) || !Number.isFinite(to) || from === to) { el.textContent = to.toLocaleString('en-US'); return () => {} }
+  const state = { n: from }
+  const tween = gsap.to(state, {
+    n: to, duration: motionSec('--motion-count', 640), ease: 'power2.out',
+    onUpdate: () => { el.textContent = Math.round(state.n).toLocaleString('en-US') },
+  })
+  return () => { tween.kill(); el.textContent = to.toLocaleString('en-US') }
+}
+
+/**
+ * Курс защёлкивается: цифры перебираются и встают на место слева направо,
+ * как у продукта, который взял живой курс и зафиксировал его. Единственное
+ * место перебора в прототипе (`patterns.md`): у показания прибора такого
+ * движения быть не может — оно сообщало бы, что число случайно. Перебираются
+ * только цифры, разделители стоят; шрифт табличный, ширина не дёргается.
+ * Длительность — токен `--motion-lock`.
+ */
+export function lockDigits(el: HTMLElement, final: string) {
+  if (reducedMotion()) { el.textContent = final; return () => {} }
+  const chars = Array.from(final)
+  const slots = chars.map((c, i) => (/\d/.test(c) ? i : -1)).filter((i) => i >= 0)
+  if (slots.length === 0) { el.textContent = final; return () => {} }
+  /* Пока экран едет на место (`motion-move`), цифры только перебираются;
+     защёлкивание начинается после — иначе оно проходит под кадром загрузки,
+     и человек застаёт уже готовый курс. Каждая цифра встаёт в свой срок:
+     первая — на трети отведённого, последняя — в конце. */
+  const lead = motionSec('--motion-move', 240)
+  const lock = motionSec('--motion-lock', 480)
+  const total = lead + lock
+  const settle = slots.map((_, k) => (lead + lock * (0.35 + 0.65 * (k / Math.max(1, slots.length - 1)))) / total)
+  const state = { p: 0 }
+  let frame = -1
+  const draw = () => {
+    const tick = Math.floor(state.p * total * 1000 / 45)   // новый случайный глиф раз в 45 мс, иначе смазывается в серое
+    if (tick === frame && state.p < 1) return
+    frame = tick
+    const out = chars.slice()
+    slots.forEach((i, k) => { if (state.p < settle[k]) out[i] = String(Math.floor(Math.random() * 10)) })
+    el.textContent = out.join('')
+  }
+  draw()
+  const tween = gsap.to(state, {
+    p: 1, duration: total, ease: 'none',
+    onUpdate: draw, onComplete: () => { el.textContent = final },
+  })
+  return () => { tween.kill(); el.textContent = final }
+}

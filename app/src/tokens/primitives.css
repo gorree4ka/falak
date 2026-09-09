@@ -127,6 +127,7 @@
   --motion-press: 120ms ease-out;
   --motion-move: 240ms cubic-bezier(.32,.72,0,1);
   --motion-count: 640ms ease-out;
+  --motion-lock: 480ms linear;
   --motion-orbit: 900ms cubic-bezier(.65,0,.35,1);
   --motion-day: 86400s linear;
 }

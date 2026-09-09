@@ -1,9 +1,11 @@
+import type { ReactNode } from 'react'
 import styles from './FeedRow.module.css'
 
 export interface FeedRowProps {
   group: string
   detail: string
-  amount: string
+  /** Строка или узел: курс на переводе приходит компонентом, который его защёлкивает. */
+  amount: ReactNode
   last?: boolean
 }
 
